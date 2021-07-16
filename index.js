@@ -38,7 +38,7 @@ function main() {
                     throw `黑名单 => ${ip}`;
                 }
             });
-        } catch(error) {
+        } catch (error) {
             //
         }
         if (!isBlackIP) next();
@@ -53,13 +53,13 @@ function main() {
     //     res.set({'Content-Disposition': `attachment; filename="${encodeURI(info.title + ext)}"; filename*=UTF-8''${encodeURI(info.title + ext)}`});
     //     next();
     // });
-     app.use('/file', (req, res, next) => {
+    app.use('/file', (req, res, next) => {
         console.log(`下载${req.url}`);
         let info = fs.readFileSync(`${__dirname}/tmp/${req.url.replace(/\.\w+$/, '.info.json')}`).toString();
         info = JSON.parse(info);
-        console.log({'标题': info.title}); // or 'fulltitle'
+        console.log({ '标题': info.title }); // or 'fulltitle'
         let ext = req.url.match(/.*(\.\w+)$/)[1];
-        res.set({'Content-Disposition': `attachment; filename="${encodeURIComponent(info.title + ext)}"; filename*=UTF-8''${encodeURI(info.title + ext)}`});
+        res.set({ 'Content-Disposition': `attachment; filename="${encodeURIComponent(info.title + ext)}"; filename*=UTF-8''${encodeURI(info.title + ext)}` });
         next();
     });
     app.use('/file', express.static(`${__dirname}/tmp`));
@@ -291,7 +291,7 @@ function parseSubtitle(msg) {
         let noAutoSub = true;
         let officialSub = [];
 
-        for (let i = 0; i < rs.length; i ++ ) {
+        for (let i = 0; i < rs.length; i++) {
             if (rs[i].trim() === '' || rs[i].trim() === '\n') continue; // 空行直接忽略
             // console.log('=>  ', rs[i]);
             // 排除一下连自动字幕都没有的, 那一定是没有任何字幕可用
@@ -302,7 +302,7 @@ function parseSubtitle(msg) {
             // 解析官方字幕
             if (rs[i].match(/.*Available subtitles for .*?:/)) {
                 FOR_J: // 打标签, 因为需要从switch中断
-                for (let j = i + 1; j < rs.length; j ++ ) {
+                for (let j = i + 1; j < rs.length; j++) {
                     if (rs[j].trim() === '' || rs[j].trim() === '\n') continue; // 空行直接忽略
                     sub = catchSubtitle(rs[j]);
                     switch (sub) {
@@ -383,7 +383,7 @@ function task() {
                         filename: `${title}.${locale}${ext}`, // 建议文件名
                         text, // 字幕文本
                     });
-                } catch(error) { // 下载过程出错
+                } catch (error) { // 下载过程出错
                     console.log(error);
                 }
                 worker_threads.parentPort.postMessage({
@@ -439,7 +439,7 @@ format code  extension  resolution note
 133          mp4        426x240    240p  247k , avc1.4d4015, 15fps, video only, 6.58MiB
 242          webm       426x240    240p  162k , vp9, 15fps, video only, 2.62MiB
 18           mp4        512x288    240p  355k , avc1.42001E, mp4a.40.2@ 96k (44100Hz), 9.58MiB (best)`.split('\n');
-                } catch(error) {
+                } catch (error) {
                     console.log(error.toString());
                     worker_threads.parentPort.postMessage({
                         "error": "解析失败！",
@@ -483,7 +483,7 @@ format code  extension  resolution note
                 videos.sort((a, b) => a.rate - b.rate);
                 bestAudio = audios[audios.length - 1];
                 bestVideo = videos[videos.length - 1];
-                
+
                 let subs = parseSubtitle(msg); // 解析字幕
 
                 worker_threads.parentPort.postMessage({
@@ -522,7 +522,7 @@ format code  extension  resolution note
                     });
                 } catch (error) {
                     let cause = 'Unknown cause';
-                    console.log({error});
+                    console.log({ error });
                     error.toString().split('\n').forEach(it => {
                         console.log(it);
                         let mr = it.match(/^.*(ERROR.*)$/);
@@ -551,7 +551,7 @@ format code  extension  resolution note
                 const fullpath = `${__dirname}/tmp/${path}`;
                 let cmd = //`cd '${__dirname}' && (cd tmp > /dev/null || (mkdir tmp && cd tmp)) &&` +
                     `youtube-dl  ${config.cookie !== undefined ? `--cookies ${config.cookie}` : ''} 'https://www.youtube.com/watch?v=${videoID}' -f ${format.replace('x', '+')} ` +
-                    `-o '${fullpath}/${videoID}.%(ext)s' ${recode !== undefined ? `--recode ${recode}` : ''} -k --write-info-json`;
+                    `-o '${fullpath}/${videoID}.%(ext)s' ${recode !== undefined ? `--recode ${recode}` : ''} -k --write-info-json --external-downloader aria2c --ext    ernal-downloader-args "-x 16 -k 1M"`;
                 console.log({ cmd });
                 try {
                     let dest = 'Unknown dest';
@@ -576,7 +576,7 @@ format code  extension  resolution note
                     });
                 } catch (error) {
                     let cause = 'Unknown cause';
-                    console.log({error});
+                    console.log({ error });
                     error.toString().split('\n').forEach(it => {
                         console.log(it);
                         let mr = it.match(/^.*(ERROR.*)$/);
