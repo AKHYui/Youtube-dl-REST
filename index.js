@@ -551,7 +551,7 @@ format code  extension  resolution note
                 const fullpath = `${__dirname}/tmp/${path}`;
                 let cmd = //`cd '${__dirname}' && (cd tmp > /dev/null || (mkdir tmp && cd tmp)) &&` +
                     `youtube-dl  ${config.cookie !== undefined ? `--cookies ${config.cookie}` : ''} 'https://www.youtube.com/watch?v=${videoID}' -f ${format.replace('x', '+')} ` +
-                    `-o '${fullpath}/${videoID}.%(ext)s' ${recode !== undefined ? `--recode ${recode}` : ''} -k --write-info-json --external-downloader aria2c --ext    ernal-downloader-args "-x 16 -k 1M"`;
+                    `-o '${fullpath}/${videoID}.%(ext)s' ${recode !== undefined ? `--recode ${recode}` : ''} -k --write-info-json --external-downloader aria2c --external-downloader-args "-x 16 -k 1M"`;
                 console.log({ cmd });
                 try {
                     let dest = 'Unknown dest';
